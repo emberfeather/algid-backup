@@ -19,8 +19,7 @@ component extends="algid.inc.resource.base.model" {
 		
 		// Directory
 		add__attribute(
-			attribute = 'directory',
-			defaultValue = 'backup'
+			attribute = 'directory'
 		);
 		
 		return this;
@@ -39,6 +38,8 @@ component extends="algid.inc.resource.base.model" {
 	}
 	
 	public string function getFullPath() {
-		return this.getPath() & '/' & this.getDirectory();
+		local.dir = this.getDirectory();
+		
+		return this.getPath() & ( len(local.dir) ? '/' & local.dir : '');
 	}
 }

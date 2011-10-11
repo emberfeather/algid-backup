@@ -5,8 +5,6 @@
 		<cfset local.plugin = variables.transport.theApplication.managers.plugin.getBackup() />
 		<cfset local.observer = getPluginObserver('backup', 'backup') />
 		
-		<cfset local.observer.beforeBackup(variables.transport, arguments.options) />
-		
 		<cfset local.backup = getModel('backup', 'backup') />
 		
 		<cfif structKeyExists(arguments.options, 'path') and len(arguments.options.pat)>
@@ -27,10 +25,12 @@
 			<cfset directoryCreate(local.backup.getFullPath()) />
 		</cfif>
 		
+		<cfset local.observer.beforeBackup(variables.transport, arguments.options, local.backup) />
+		
 		<cftransaction>
 			<cfset local.observer.backup(variables.transport, arguments.options, local.backup) />
 		</cftransaction>
 		
-		<cfset local.observer.afterBackup(variables.transport, arguments.options) />
+		<cfset local.observer.afterBackup(variables.transport, arguments.options, local.backup) />
 	</cffunction>
 </cfcomponent>

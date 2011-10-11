@@ -7,8 +7,8 @@
 		
 		<cfset local.backup = getModel('backup', 'backup') />
 		
-		<cfif structKeyExists(arguments.options, 'path') and len(arguments.options.pat)>
-			<cfset local.backup.setPath(arguments.options.pat) />
+		<cfif structKeyExists(arguments.options, 'path') and len(arguments.options.path)>
+			<cfset local.backup.setPath(arguments.options.path) />
 		<cfelse>
 			<cfset local.backup.setPath(local.plugin.getStoragePath() & '/backups') />
 		</cfif>

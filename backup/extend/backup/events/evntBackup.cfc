@@ -34,4 +34,25 @@ component extends="algid.inc.resource.base.event" {
 			}
 		}
 	}
+	
+	public void function afterBackup(required struct transport, required struct options, required component backup) {
+		if(arguments.transport.theApplication.managers.plugin.hasScm()) {
+			local.git = arguments.transport.theApplication.managers.singleton.getGit();
+			
+			// Check if the backup is a git repository
+			local.isGit = true;
+			local.fullPath = expandPath(arguments.backup.getFullPath());
+			
+			try {
+				local.git.status(local.fullPath);
+			} catch(any e) {
+				local.isGit = false;
+			}
+			
+			if(local.isGit) {
+				local.git.add(local.fullPath, '.');
+				local.git.commit(local.fullPath, '-m "Backed up on #arguments.backup.getCreatedOn()#"');
+			}
+		}
+	}
 }
